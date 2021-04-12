@@ -1,10 +1,8 @@
 <?php
 
-
 namespace werk365\IdentityDocuments;
 
 use Exception;
-use Google\ApiCore\ValidationException;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Intervention\Image\Image;
 
@@ -15,24 +13,25 @@ class IdentityImage
     public string $text;
     private ImageAnnotatorClient $annotator;
 
-
-    public function __construct(Image $image){
+    public function __construct(Image $image)
+    {
         $this->setImage($image);
         $this->annotator = new ImageAnnotatorClient(
             ['credentials' => config('google_key')]
         );
     }
 
-    public function setImage(Image $image){
+    public function setImage(Image $image)
+    {
         $this->image = $image;
     }
 
-    public function resize(){
-
+    public function resize()
+    {
     }
 
-    public function rotate(){
-
+    public function rotate()
+    {
     }
 
     public function merge(IdentityImage $image): IdentityImage
@@ -45,6 +44,7 @@ class IdentityImage
         $response = $this->annotator->textDetection((string) $this->image->encode());
         $text = $response->getTextAnnotations();
         $this->text = $text[0]->getDescription();
+
         return $this->text;
     }
 }

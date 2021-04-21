@@ -36,12 +36,13 @@ class IdentityDocument
         $this->resolver = new VizParser();
     }
 
-    public static function all($frontImage = null, $backImage = null){
+    public static function all($frontImage = null, $backImage = null)
+    {
         $id = new IdentityDocument($frontImage, $backImage);
         $mrz = $id->getMrz();
         $parsed = $id->getParsedMrz();
         $face = $id->getFace();
-        $faceB64 = "data:image/jpg;base64," .
+        $faceB64 = 'data:image/jpg;base64,'.
             base64_encode(
                 $face
                 ->resize(null, 200, function ($constraint) {
@@ -53,10 +54,10 @@ class IdentityDocument
         $viz = $id->getViz();
 
         return [
-            "mrz" => $mrz,
-            "parsed" => $parsed,
-            "viz" => $viz,
-            "face" => $faceB64,
+            'mrz' => $mrz,
+            'parsed' => $parsed,
+            'viz' => $viz,
+            'face' => $faceB64,
         ];
     }
 
@@ -65,6 +66,7 @@ class IdentityDocument
         $image = $this->createImage($image);
         $this->frontImage = new IdentityImage($image);
         $this->images[] = &$this->frontImage;
+
         return $this;
     }
 
@@ -73,6 +75,7 @@ class IdentityDocument
         $image = $this->createImage($image);
         $this->backImage = new IdentityImage($image);
         $this->images[] = &$this->backImage;
+
         return $this;
     }
 
@@ -113,8 +116,9 @@ class IdentityDocument
         return $this->mrz;
     }
 
-    public function viz(){
-        if(!$this->text){
+    public function viz()
+    {
+        if (! $this->text) {
             return null;
         }
 
@@ -141,7 +145,7 @@ class IdentityDocument
 
     public function getFace(): ?Image
     {
-        if (! isset($this->face) || !$this->face) {
+        if (! isset($this->face) || ! $this->face) {
             $this->face();
         }
 
@@ -163,7 +167,7 @@ class IdentityDocument
 
     public function getParsedMrz(): array
     {
-        if (! isset($this->parsedMrz) || !$this->mrz) {
+        if (! isset($this->parsedMrz) || ! $this->mrz) {
             $this->parseMrz();
         }
 

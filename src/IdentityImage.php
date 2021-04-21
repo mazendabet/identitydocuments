@@ -3,12 +3,11 @@
 namespace werk365\IdentityDocuments;
 
 use Exception;
-use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Intervention\Image\Image;
 use ReflectionClass;
 use werk365\IdentityDocuments\Filters\MergeFilter;
-use werk365\IdentityDocuments\Interfaces\OCR;
 use werk365\IdentityDocuments\Interfaces\FaceDetection;
+use werk365\IdentityDocuments\Interfaces\OCR;
 use werk365\IdentityDocuments\Services\Google;
 
 class IdentityImage
@@ -27,20 +26,20 @@ class IdentityImage
         $this->setImage($image);
     }
 
-    public function setOcrService(string $service){
+    public function setOcrService(string $service)
+    {
         $class = new ReflectionClass($service);
-        if (!$class->implementsInterface(OCR::class))
-        {
-            dd("not ocr");
+        if (! $class->implementsInterface(OCR::class)) {
+            dd('not ocr');
         }
         $this->ocrService = $service;
     }
 
-    public function setFaceDetectionService(string $service){
+    public function setFaceDetectionService(string $service)
+    {
         $class = new ReflectionClass($service);
-        if (!$class->implementsInterface(FaceDetection::class))
-        {
-            dd("not fd");
+        if (! $class->implementsInterface(FaceDetection::class)) {
+            dd('not fd');
         }
         $this->faceDetectionService = $service;
     }
@@ -58,12 +57,14 @@ class IdentityImage
     public function ocr(): string
     {
         $service = new $this->ocrService();
+
         return $this->text = $service->ocr($this->image)->text;
     }
 
     public function face(): ?Image
     {
         $service = new $this->faceDetectionService();
+
         return $this->face = $service->detect($this);
     }
 }

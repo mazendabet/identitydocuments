@@ -6,10 +6,9 @@ class MrzParser extends Mrz
 {
     public function parse($mrz, $type)
     {
-
         $parsed = [];
 
-        if(!isset($type) || !$type){
+        if (! isset($type) || ! $type) {
             return $parsed;
         }
 
@@ -21,21 +20,23 @@ class MrzParser extends Mrz
             }
         }
 
-        [$parsed["last_name"], $parsed["first_name"]] = $this->getFirstLastName($parsed["full_name"]);
+        [$parsed['last_name'], $parsed['first_name']] = $this->getFirstLastName($parsed['full_name']);
 
-        $parsed["issuing_country_name"] = $this->getFullCountryName($parsed["issuing_country"]);
-        $parsed["nationality_name"] = $this->getFullCountryName($parsed["issuing_country"]);
+        $parsed['issuing_country_name'] = $this->getFullCountryName($parsed['issuing_country']);
+        $parsed['nationality_name'] = $this->getFullCountryName($parsed['issuing_country']);
 
         return $parsed;
     }
 
     private function getFirstLastName(string $fullName): array
     {
-        [$lastName, $firstName] = explode("<<", $fullName);
-        return [$lastName, explode("<", $firstName)];
+        [$lastName, $firstName] = explode('<<', $fullName);
+
+        return [$lastName, explode('<', $firstName)];
     }
 
-    private function getFullCountryName($countryCode){
+    private function getFullCountryName($countryCode)
+    {
         return $this->countries[$countryCode] ?? null;
     }
 }

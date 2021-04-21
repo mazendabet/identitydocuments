@@ -4,16 +4,23 @@ namespace werk365\IdentityDocuments;
 
 use Intervention\Image\Facades\Image as Img;
 use Intervention\Image\Image;
+use werk365\IdentityDocuments\Mrz\MrzParser;
+use werk365\IdentityDocuments\Mrz\MrzSearcher;
+use werk365\IdentityDocuments\Viz\VizParser;
 
 class IdentityDocument
 {
     public string $mrz;
+    public ?Image $face;
     public array $parsedMrz;
     private IdentityImage $frontImage;
     private IdentityImage $backImage;
     private IdentityImage $mergedImage;
     private array $images;
-    private MrzSearcher $mrzSearcher;
+    private VizParser $resolver;
+    private MrzSearcher $searcher;
+    private MrzParser $parser;
+    private string $text = '';
 
     public function __construct($frontImage = null, $backImage = null)
     {
@@ -24,21 +31,49 @@ class IdentityDocument
             $this->addBackImage($backImage);
         }
 
-        $this->mrzSearcher = new MrzSearcher();
+        $this->searcher = new MrzSearcher();
+        $this->parser = new MrzParser();
+        $this->resolver = new VizParser();
     }
 
-    public function addFrontImage($image): void
+    public static function all($frontImage = null, $backImage = null){
+        $id = new IdentityDocument($frontImage, $backImage);
+        $mrz = $id->getMrz();
+        $parsed = $id->getParsedMrz();
+        $face = $id->getFace();
+        $faceB64 = "data:image/jpg;base64," .
+            base64_encode(
+                $face
+                ->resize(null, 200, function ($constraint) {
+                    $constraint->aspectRatio();
+                })
+                ->encode()
+                ->encoded
+            );
+        $viz = $id->getViz();
+
+        return [
+            "mrz" => $mrz,
+            "parsed" => $parsed,
+            "viz" => $viz,
+            "face" => $faceB64,
+        ];
+    }
+
+    public function addFrontImage($image): IdentityDocument
     {
         $image = $this->createImage($image);
         $this->frontImage = new IdentityImage($image);
         $this->images[] = &$this->frontImage;
+        return $this;
     }
 
-    public function addBackImage($image): void
+    public function addBackImage($image): IdentityDocument
     {
         $image = $this->createImage($image);
         $this->backImage = new IdentityImage($image);
         $this->images[] = &$this->backImage;
+        return $this;
     }
 
     private function createImage($file): ?Image
@@ -68,14 +103,31 @@ class IdentityDocument
     {
         $this->mrz = '';
         foreach ($this->images as $image) {
-            $image->ocr();
-            if ($mrz = $this->mrzSearcher->search($image->text)) {
+            $this->text .= $image->ocr();
+            if ($mrz = $this->searcher->search($image->text)) {
                 $this->mrz = $mrz ?? '';
                 break;
             }
         }
 
         return $this->mrz;
+    }
+
+    public function viz(){
+        if(!$this->text){
+            return null;
+        }
+
+        return $this->viz = $this->resolver->match($this->parsedMrz, $this->mrz, $this->text);
+    }
+
+    public function getViz(): array
+    {
+        if (! isset($this->viz)) {
+            $this->viz();
+        }
+
+        return $this->viz;
     }
 
     public function getMrz(): string
@@ -87,9 +139,31 @@ class IdentityDocument
         return $this->mrz;
     }
 
+    public function getFace(): ?Image
+    {
+        if (! isset($this->face) || !$this->face) {
+            $this->face();
+        }
+
+        return $this->face;
+    }
+
+    private function face(): string
+    {
+        $this->face = null;
+        foreach ($this->images as $image) {
+            if ($face = $image->face()) {
+                $this->face = $face ?? null;
+                break;
+            }
+        }
+
+        return $this->face;
+    }
+
     public function getParsedMrz(): array
     {
-        if (! isset($this->parsedMrz) && $this->mrz) {
+        if (! isset($this->parsedMrz) || !$this->mrz) {
             $this->parseMrz();
         }
 
@@ -105,6 +179,6 @@ class IdentityDocument
 
     private function parseMrz(): void
     {
-        $this->parsedMrz = $this->mrzSearcher->parse($this->getMrz());
+        $this->parsedMrz = $this->parser->parse($this->getMrz(), $this->searcher->type);
     }
 }

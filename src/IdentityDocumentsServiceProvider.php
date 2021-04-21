@@ -32,7 +32,7 @@ class IdentityDocumentsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/identitydocuments.php', 'identitydocuments');
-
+        $this->mergeConfigFrom(__DIR__.'/../config/countries.php', 'id_countries');
         $this->commands($this->commands);
     }
 }

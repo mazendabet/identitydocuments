@@ -5,20 +5,44 @@ namespace werk365\IdentityDocuments;
 use Exception;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Intervention\Image\Image;
+use ReflectionClass;
+use werk365\IdentityDocuments\Filters\MergeFilter;
+use werk365\IdentityDocuments\Interfaces\OCR;
+use werk365\IdentityDocuments\Interfaces\FaceDetection;
+use werk365\IdentityDocuments\Services\Google;
 
 class IdentityImage
 {
     public Image $image;
     public Exception $error;
     public string $text;
-    private ImageAnnotatorClient $annotator;
+    public Image $face;
+    private string $ocrService;
+    private string $faceDetectionService;
 
     public function __construct(Image $image)
     {
+        $this->setOcrService(Google::class);
+        $this->setFaceDetectionService(Google::class);
         $this->setImage($image);
-        $this->annotator = new ImageAnnotatorClient(
-            ['credentials' => config('google_key')]
-        );
+    }
+
+    public function setOcrService(string $service){
+        $class = new ReflectionClass($service);
+        if (!$class->implementsInterface(OCR::class))
+        {
+            dd("not ocr");
+        }
+        $this->ocrService = $service;
+    }
+
+    public function setFaceDetectionService(string $service){
+        $class = new ReflectionClass($service);
+        if (!$class->implementsInterface(FaceDetection::class))
+        {
+            dd("not fd");
+        }
+        $this->faceDetectionService = $service;
     }
 
     public function setImage(Image $image)
@@ -26,25 +50,20 @@ class IdentityImage
         $this->image = $image;
     }
 
-    public function resize()
-    {
-    }
-
-    public function rotate()
-    {
-    }
-
     public function merge(IdentityImage $image): IdentityImage
     {
-        return $image;
+        return new IdentityImage($this->image->filter(new MergeFilter($image->image)));
     }
 
     public function ocr(): string
     {
-        $response = $this->annotator->textDetection((string) $this->image->encode());
-        $text = $response->getTextAnnotations();
-        $this->text = $text[0]->getDescription();
+        $service = new $this->ocrService();
+        return $this->text = $service->ocr($this->image)->text;
+    }
 
-        return $this->text;
+    public function face(): ?Image
+    {
+        $service = new $this->faceDetectionService();
+        return $this->face = $service->detect($this);
     }
 }

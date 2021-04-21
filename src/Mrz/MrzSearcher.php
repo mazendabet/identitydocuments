@@ -1,10 +1,10 @@
 <?php
 
-namespace werk365\IdentityDocuments;
+namespace werk365\IdentityDocuments\Mrz;
 
 use werk365\IdentityDocuments\Helpers\IdCheck;
 
-class MrzSearcher extends MRZ
+class MrzSearcher extends Mrz
 {
     public function search(string $string): ?string
     {
@@ -13,7 +13,7 @@ class MrzSearcher extends MRZ
         $startPosition = $this->findMrzStartPosition($keysPositions, $characters);
 
         if ($startPosition === null) {
-            dd('Not found');
+            return null;
         }
 
         $mrz = $this->getMrz($strippedString, $startPosition);
@@ -24,20 +24,6 @@ class MrzSearcher extends MRZ
     private function getMrz($strippedString, $startPosition)
     {
         return substr($strippedString, $startPosition, $this->{$this->type}['length']);
-    }
-
-    public function parse($mrz)
-    {
-        $parsed = [];
-        foreach ($this->values as $name=>$value) {
-            if ($value[$this->type]) {
-                $parsed[$name] = substr($mrz, ...$value[$this->type]);
-            } else {
-                $parsed[$name] = null;
-            }
-        }
-
-        return $parsed;
     }
 
     private function findKeysInCharacters(array $keys, array $characters, $positions = []): array

@@ -1,8 +1,8 @@
 <?php
 
-namespace werk365\IdentityDocuments;
+namespace werk365\IdentityDocuments\Mrz;
 
-class MRZ
+class Mrz
 {
     protected array $TD1;
     protected array $TD2;
@@ -11,10 +11,12 @@ class MRZ
     protected array $MRVB;
     protected array $keys;
     protected array $values;
+    protected array $countries;
     public string $type = '';
 
     public function __construct()
     {
+        $this->countries = config('id_countries');
         $this->loadConfig();
     }
 

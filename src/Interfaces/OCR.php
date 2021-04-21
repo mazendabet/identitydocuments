@@ -1,4 +1,5 @@
 <?php
+
 namespace werk365\IdentityDocuments\Interfaces;
 
 use Intervention\Image\Image;

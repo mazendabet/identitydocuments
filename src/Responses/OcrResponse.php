@@ -6,7 +6,8 @@ class OcrResponse
 {
     public string $text;
 
-    public function __construct(string $input){
+    public function __construct(string $input)
+    {
         $this->text = $input;
     }
 }

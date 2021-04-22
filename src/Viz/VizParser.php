@@ -61,12 +61,15 @@ class VizParser extends Viz
 
     private function compare($mrz, $viz)
     {
-        if (strlen($viz) == 0) {
-            return 0;
-        }
+
         $viz = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $viz);
         $viz = preg_replace('/([ ]|[-])/', '<', $viz);
         $viz = preg_replace("/\p{P}/u", '', $viz);
+
+        if (strlen($viz) == 0) {
+            return 0;
+        }
+        
         $distance = levenshtein(strtolower($mrz), strtolower($viz));
 
         return (strlen($viz) - $distance) / strlen($viz);

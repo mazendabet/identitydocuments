@@ -37,6 +37,7 @@ class MrzParser extends Mrz
 
     private function getFullCountryName($countryCode)
     {
+        $countryCode = preg_replace('/</', '', $countryCode);
         return $this->countries[$countryCode] ?? null;
     }
 }

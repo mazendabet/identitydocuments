@@ -4,7 +4,10 @@ namespace werk365\IdentityDocuments\Viz;
 
 class VizParser extends Viz
 {
-    private array $viz = [];
+    private array $viz = [
+        'first_name' => [],
+        'last_name' => null,
+    ];
 
     public function match($parsed, $mrz, $text)
     {
@@ -16,53 +19,55 @@ class VizParser extends Viz
         $mrzRegex = implode($mrzCharacters);
         $text = preg_replace("/$mrzRegex/", '', $text);
         $text = preg_replace("/\n/", ' ', $text);
-
         $words = explode(' ', $text);
-        $this->viz['first_name'] = [];
-        foreach ($words as $word) {
-            if ($this->compare($parsed['last_name'], $word)) {
-                $this->viz['last_name'] = $word;
+        $lastNameScore = 0.4;
+        $firstNameScore = [];
+        foreach ($words as $wordKey => $word) {
+            $lastName = $word;
+            if(substr_count($parsed['last_name'], "<")){
+                $fillerAmount = range(0, substr_count($parsed['last_name'], "<"));
+                $lastName = [];
+                foreach($fillerAmount as $count){
+                    if(isset($words[$wordKey + $count])){
+                        array_push($lastName, $words[$wordKey + $count]);
+                    }
+                }
+                $lastName = implode('<', $lastName);
+            }
+            if ($this->compare($parsed['last_name'], $lastName) > $lastNameScore) {
+                $this->viz['last_name']['value'] = preg_replace('/</', ' ', $lastName);
+                $lastNameScore = $this->compare($parsed['last_name'], $lastName);
+                $this->viz['last_name']['confidence'] = $lastNameScore;
+
             }
             foreach ($parsed['first_name'] as $key => $first_name) {
-                if ($this->compare($parsed['first_name'][$key], $word)) {
-                    $this->viz['first_name'][$key] = $word;
+                if(!isset($firstNameScore[$key])){
+                    $firstNameScore[$key] = 0.4;
+                }
+                if ($this->compare($parsed['first_name'][$key], $word) > $firstNameScore[$key]) {
+                    $firstNameScore[$key] = $this->compare($parsed['first_name'][$key], $word);
+                    $first_name = [
+                        'value' => $word,
+                        'confidence' => $firstNameScore[$key]
+                    ];
+                    $this->viz['first_name'][$key] = $first_name;
                 }
             }
         }
-
+        ksort($this->viz['first_name']);
+        $this->viz['first_name'] = array_values($this->viz['first_name']);
         return $this->viz;
     }
 
     private function compare($mrz, $viz)
     {
+        if(strlen($viz) == 0){
+            return 0;
+        }
         $viz = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $viz);
         $viz = preg_replace('/([ ]|[-])/', '<', $viz);
         $viz = preg_replace("/\p{P}/u", '', $viz);
-        if ($this->fuzzy_match($mrz, $viz, 0)['match']) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function fuzzy_match($query, $target, $distance)
-    {
-        //#  set max substitution steps if set to 0
-        if ($distance == 0) {
-            $length = strlen($query);
-            if ($length > 10) {
-                $distance = 4;
-            } elseif ($length > 6) {
-                $distance = 3;
-            } else {
-                $distance = 2;
-            }
-        }
-        $lev = levenshtein(strtolower($query), strtolower($target));
-        if ($lev <= $distance) {
-            return ['match' => 1, 'distance' => $lev, 'max_distance' => $distance];
-        } else {
-            return ['match' => 0, 'distance' => $lev, 'max_distance' => $distance];
-        }
+        $distance = levenshtein(strtolower($mrz), strtolower($viz));
+        return (strlen($viz)-$distance)/strlen($viz);
     }
 }

@@ -23,9 +23,9 @@ class MrzParserTest extends TestCase
         'optional_data_row_2' => null,
         'last_name' => 'DE<BRUIJN',
         'first_name' => [
-                0 => 'WILLEKE',
-                1 => 'LISELOTTE',
-            ],
+            0 => 'WILLEKE',
+            1 => 'LISELOTTE',
+        ],
         'issuing_country_name' => 'Netherlands',
         'nationality_name' => 'Netherlands',
     ];

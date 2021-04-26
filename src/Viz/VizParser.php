@@ -32,8 +32,8 @@ class VizParser extends Viz
                         array_push($lastName, $words[$wordKey + $count]);
                     }
                 }
-                foreach($lastName as $name){
-                    if(substr_count($name, '-')){
+                foreach ($lastName as $name) {
+                    if (substr_count($name, '-')) {
                         array_pop($lastName);
                     }
                 }

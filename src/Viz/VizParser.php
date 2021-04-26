@@ -32,6 +32,11 @@ class VizParser extends Viz
                         array_push($lastName, $words[$wordKey + $count]);
                     }
                 }
+                foreach($lastName as $name){
+                    if(substr_count($name, '-')){
+                        array_pop($lastName);
+                    }
+                }
                 $lastName = implode('<', $lastName);
             }
             if ($this->compare($parsed['last_name'], $lastName) > $lastNameScore) {

@@ -1,8 +1,10 @@
 <?php
 
+use Werk365\IdentityDocuments\Services\Google;
+use Werk365\IdentityDocuments\Services\Tesseract;
+
 return [
-    'return_all' => false,
-    'countries_convert_o_to_zero' => [
-        'NLD',
-    ],
+    'ocrService' => Google::class,
+    'faceDetectionService' => Google::class,
+    'mergeImages' => false, // bool
 ];

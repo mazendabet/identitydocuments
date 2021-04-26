@@ -1,6 +1,6 @@
 <?php
 
-namespace werk365\IdentityDocuments\Responses;
+namespace Werk365\IdentityDocuments\Responses;
 
 class OcrResponse
 {

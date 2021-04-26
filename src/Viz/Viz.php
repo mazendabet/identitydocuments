@@ -1,6 +1,6 @@
 <?php
 
-namespace werk365\IdentityDocuments\Viz;
+namespace Werk365\IdentityDocuments\Viz;
 
 class Viz
 {

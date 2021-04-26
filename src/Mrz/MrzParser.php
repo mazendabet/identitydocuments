@@ -1,6 +1,6 @@
 <?php
 
-namespace werk365\IdentityDocuments\Mrz;
+namespace Werk365\IdentityDocuments\Mrz;
 
 class MrzParser extends Mrz
 {

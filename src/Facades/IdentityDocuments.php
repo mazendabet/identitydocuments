@@ -1,6 +1,6 @@
 <?php
 
-namespace werk365\IdentityDocuments\Facades;
+namespace Werk365\IdentityDocuments\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace werk365\IdentityDocuments;
+namespace Werk365\IdentityDocuments;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider;

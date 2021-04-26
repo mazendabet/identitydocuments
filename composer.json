@@ -26,18 +26,18 @@
     },
     "autoload": {
         "psr-4": {
-            "werk365\\IdentityDocuments\\": "src/"
+            "Werk365\\IdentityDocuments\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "werk365\\IdentityDocuments\\Tests\\": "tests"
+            "Werk365\\IdentityDocuments\\Tests\\": "tests"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "werk365\\IdentityDocuments\\IdentityDocumentsServiceProvider"
+                "Werk365\\IdentityDocuments\\IdentityDocumentsServiceProvider"
             ],
             "aliases": {
                 "IdentityDocuments": "werk365\\IdentityDocuments\\Facades\\IdentityDocuments"

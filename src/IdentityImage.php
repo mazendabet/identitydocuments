@@ -1,14 +1,15 @@
 <?php
 
-namespace werk365\IdentityDocuments;
+namespace Werk365\IdentityDocuments;
 
 use Exception;
 use Intervention\Image\Image;
 use ReflectionClass;
-use werk365\IdentityDocuments\Filters\MergeFilter;
-use werk365\IdentityDocuments\Interfaces\FaceDetection;
-use werk365\IdentityDocuments\Interfaces\OCR;
-use werk365\IdentityDocuments\Services\Google;
+use Werk365\IdentityDocuments\Filters\MergeFilter;
+use Werk365\IdentityDocuments\Interfaces\FaceDetection;
+use Werk365\IdentityDocuments\Interfaces\OCR;
+use Werk365\IdentityDocuments\Services\Google;
+use Werk365\IdentityDocuments\Services\Tesseract;
 
 class IdentityImage
 {
@@ -19,10 +20,10 @@ class IdentityImage
     private string $ocrService;
     private string $faceDetectionService;
 
-    public function __construct(Image $image)
+    public function __construct(Image $image, $ocrService, $faceDetectionService)
     {
-        $this->setOcrService(Google::class);
-        $this->setFaceDetectionService(Google::class);
+        $this->setOcrService($ocrService);
+        $this->setFaceDetectionService($faceDetectionService);
         $this->setImage($image);
     }
 
@@ -51,7 +52,7 @@ class IdentityImage
 
     public function merge(IdentityImage $image): IdentityImage
     {
-        return new IdentityImage($this->image->filter(new MergeFilter($image->image)));
+        return new IdentityImage($this->image->filter(new MergeFilter($image->image)), $this->ocrService, $this->faceDetectionService);
     }
 
     public function ocr(): string

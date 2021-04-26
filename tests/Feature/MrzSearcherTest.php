@@ -3,7 +3,7 @@
 namespace Werk365\IdentityDocuments\Tests\Feature;
 
 use Tests\TestCase;
-use werk365\IdentityDocuments\Mrz\MrzSearcher;
+use Werk365\IdentityDocuments\Mrz\MrzSearcher;
 
 class MrzSearcherTest extends TestCase
 {

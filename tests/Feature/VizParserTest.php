@@ -3,7 +3,7 @@
 namespace Werk365\IdentityDocuments\Tests\Feature;
 
 use Tests\TestCase;
-use werk365\IdentityDocuments\Viz\VizParser;
+use Werk365\IdentityDocuments\Viz\VizParser;
 
 class VizParserTest extends TestCase
 {

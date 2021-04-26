@@ -1,6 +1,6 @@
 <?php
 
-namespace werk365\IdentityDocuments\Helpers;
+namespace Werk365\IdentityDocuments\Helpers;
 
 class IdCheck
 {

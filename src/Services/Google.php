@@ -1,13 +1,13 @@
 <?php
 
-namespace werk365\IdentityDocuments\Services;
+namespace Werk365\IdentityDocuments\Services;
 
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Intervention\Image\Image;
-use werk365\IdentityDocuments\IdentityImage;
-use werk365\IdentityDocuments\Interfaces\FaceDetection;
-use werk365\IdentityDocuments\Interfaces\OCR;
-use werk365\IdentityDocuments\Responses\OcrResponse;
+use Werk365\IdentityDocuments\IdentityImage;
+use Werk365\IdentityDocuments\Interfaces\FaceDetection;
+use Werk365\IdentityDocuments\Interfaces\OCR;
+use Werk365\IdentityDocuments\Responses\OcrResponse;
 
 class Google implements OCR, FaceDetection
 {

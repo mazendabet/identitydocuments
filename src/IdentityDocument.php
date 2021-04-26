@@ -1,16 +1,18 @@
 <?php
 
-namespace werk365\IdentityDocuments;
+namespace Werk365\IdentityDocuments;
 
 use Intervention\Image\Facades\Image as Img;
 use Intervention\Image\Image;
-use werk365\IdentityDocuments\Mrz\MrzParser;
-use werk365\IdentityDocuments\Mrz\MrzSearcher;
-use werk365\IdentityDocuments\Viz\VizParser;
+use Werk365\IdentityDocuments\Mrz\MrzParser;
+use Werk365\IdentityDocuments\Mrz\MrzSearcher;
+use Werk365\IdentityDocuments\Services\Google;
+use Werk365\IdentityDocuments\Viz\VizParser;
 
 class IdentityDocument
 {
     public string $mrz;
+    public string $type;
     public ?Image $face;
     public array $parsedMrz;
     private IdentityImage $frontImage;
@@ -20,10 +22,15 @@ class IdentityDocument
     private VizParser $resolver;
     private MrzSearcher $searcher;
     private MrzParser $parser;
+    private string $ocrService;
+    private string $faceDetectionService;
     private string $text = '';
 
     public function __construct($frontImage = null, $backImage = null)
     {
+        $this->ocrService = config('identitydocuments.ocrService')??Google::class;
+        $this->faceDetectionService = config('identitydocuments.faceDetectionService')??Google::class;
+
         if ($frontImage) {
             $this->addFrontImage($frontImage);
         }
@@ -39,6 +46,9 @@ class IdentityDocument
     public static function all($frontImage = null, $backImage = null)
     {
         $id = new IdentityDocument($frontImage, $backImage);
+        if(config('identitydocuments.mergeImages')){
+            $id->mergeBackAndFrontImages();
+        }
         $mrz = $id->getMrz();
         $parsed = $id->getParsedMrz();
         $face = $id->getFace();
@@ -54,6 +64,7 @@ class IdentityDocument
         $viz = $id->getViz();
 
         return [
+            'type' => $id->type,
             'mrz' => $mrz,
             'parsed' => $parsed,
             'viz' => $viz,
@@ -63,8 +74,7 @@ class IdentityDocument
 
     public function addFrontImage($image): IdentityDocument
     {
-        $image = $this->createImage($image);
-        $this->frontImage = new IdentityImage($image);
+        $this->frontImage = $this->createImage($image);
         $this->images[] = &$this->frontImage;
 
         return $this;
@@ -72,24 +82,34 @@ class IdentityDocument
 
     public function addBackImage($image): IdentityDocument
     {
-        $image = $this->createImage($image);
-        $this->backImage = new IdentityImage($image);
+        $this->backImage = $this->createImage($image);
         $this->images[] = &$this->backImage;
 
         return $this;
     }
 
-    private function createImage($file): ?Image
+    private function createImage($file): IdentityImage
     {
-        if (! is_file($file)) {
-            return null;
-        }
         file_get_contents($file->getRealPath());
 
-        return Img::make($file);
+        return new IdentityImage(Img::make($file), $this->ocrService, $this->faceDetectionService);
     }
 
-    private function mergeBackAndFrontImages()
+    public function setOcrService(string $service)
+    {
+        foreach($this->images as $image){
+            $image->setOcrService($service);
+        }
+    }
+
+    public function setFaceDetectionService(string $service)
+    {
+        foreach($this->images as $image){
+            $image->setFaceDetectionService($service);
+        }
+    }
+
+    public function mergeBackAndFrontImages()
     {
         if (! $this->frontImage || ! $this->backImage) {
             return false;
@@ -112,7 +132,7 @@ class IdentityDocument
                 break;
             }
         }
-
+        $this->type = $this->searcher->type;
         return $this->mrz;
     }
 
@@ -183,6 +203,6 @@ class IdentityDocument
 
     private function parseMrz(): void
     {
-        $this->parsedMrz = $this->parser->parse($this->getMrz(), $this->searcher->type);
+        $this->parsedMrz = $this->parser->parse($this->getMrz(), $this->type);
     }
 }

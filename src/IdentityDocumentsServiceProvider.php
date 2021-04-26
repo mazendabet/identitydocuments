@@ -13,7 +13,7 @@ class IdentityDocumentsServiceProvider extends ServiceProvider
      * @var bool
      */
     protected $commands = [
-        'Werk365\IdentityDocuments\Commands\MakeService'
+        'Werk365\IdentityDocuments\Commands\MakeService',
     ];
 
     /**

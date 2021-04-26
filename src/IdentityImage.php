@@ -8,8 +8,6 @@ use ReflectionClass;
 use Werk365\IdentityDocuments\Filters\MergeFilter;
 use Werk365\IdentityDocuments\Interfaces\FaceDetection;
 use Werk365\IdentityDocuments\Interfaces\OCR;
-use Werk365\IdentityDocuments\Services\Google;
-use Werk365\IdentityDocuments\Services\Tesseract;
 
 class IdentityImage
 {

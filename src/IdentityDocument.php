@@ -28,8 +28,8 @@ class IdentityDocument
 
     public function __construct($frontImage = null, $backImage = null)
     {
-        $this->ocrService = config('identitydocuments.ocrService')??Google::class;
-        $this->faceDetectionService = config('identitydocuments.faceDetectionService')??Google::class;
+        $this->ocrService = config('identitydocuments.ocrService') ?? Google::class;
+        $this->faceDetectionService = config('identitydocuments.faceDetectionService') ?? Google::class;
 
         if ($frontImage) {
             $this->addFrontImage($frontImage);
@@ -46,7 +46,7 @@ class IdentityDocument
     public static function all($frontImage = null, $backImage = null)
     {
         $id = new IdentityDocument($frontImage, $backImage);
-        if(config('identitydocuments.mergeImages')){
+        if (config('identitydocuments.mergeImages')) {
             $id->mergeBackAndFrontImages();
         }
         $mrz = $id->getMrz();
@@ -97,14 +97,14 @@ class IdentityDocument
 
     public function setOcrService(string $service)
     {
-        foreach($this->images as $image){
+        foreach ($this->images as $image) {
             $image->setOcrService($service);
         }
     }
 
     public function setFaceDetectionService(string $service)
     {
-        foreach($this->images as $image){
+        foreach ($this->images as $image) {
             $image->setFaceDetectionService($service);
         }
     }
@@ -133,6 +133,7 @@ class IdentityDocument
             }
         }
         $this->type = $this->searcher->type;
+
         return $this->mrz;
     }
 

@@ -30,20 +30,20 @@ class MakeService extends GeneratorCommand
 
     protected $stubName;
 
-        /**
+    /**
      * Get the stub file for the generator.
      *
      * @return string
      */
     protected function getStub()
     {
-        return __DIR__.'/../../stubs/'. $this->stubName;
+        return __DIR__.'/../../stubs/'.$this->stubName;
     }
 
     public function handle()
     {
         $type = strtolower($this->argument('type'));
-        switch($type){
+        switch ($type) {
             case 'ocr':
                 $this->stubName = 'OcrServiceStub.php';
                 break;
@@ -86,6 +86,7 @@ class MakeService extends GeneratorCommand
 
         $this->info($this->type.' created successfully.');
     }
+
     /**
      * Get the default namespace for the class.
      *
@@ -95,10 +96,10 @@ class MakeService extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '/Services';
+        return $rootNamespace.'/Services';
     }
 
-        /**
+    /**
      * Get the console command arguments.
      *
      * @return array

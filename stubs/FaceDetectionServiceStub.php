@@ -2,9 +2,9 @@
 
 namespace DummyNamespace;
 
-use Werk365\IdentityDocuments\Interfaces\FaceDetection;
 use Intervention\Image\Image;
 use Werk365\IdentityDocuments\IdentityImage;
+use Werk365\IdentityDocuments\Interfaces\FaceDetection;
 
 class DummyClass implements FaceDetection
 {

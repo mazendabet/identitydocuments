@@ -1,8 +1,9 @@
 <?php
 
+use Werk365\IdentityDocuments\Services\Google;
+
 return [
-    'return_all' => false,
-    'countries_convert_o_to_zero' => [
-        'NLD',
-    ],
+    'ocrService' => Google::class,
+    'faceDetectionService' => Google::class,
+    'mergeImages' => false, // bool
 ];

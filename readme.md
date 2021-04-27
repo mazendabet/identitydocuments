@@ -231,7 +231,7 @@ If you discover any security related issues, please email <hergen.dillema@gmail.
 
 ## License
 
-. Please see the [license file](license.md) for more information.
+. Please see the [license file](license) for more information.
 
   
 

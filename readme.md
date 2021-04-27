@@ -14,7 +14,11 @@ For general questions and suggestions join gitter:
 
   
 
-Package that allows you to handle documents like passports and other documents that contain a Machine Readable Zone (MRZ). This package allows you to process images of documents to find the MRZ, parse the MRZ, parse the Visual Inspection Zone (VIZ) and also to find and return a crop of the passport picture (using face detection).
+Package that allows you to handle documents like passports and other documents that contain a Machine Readable Zone (MRZ).
+
+This package allows you to process images of documents to find the MRZ, parse the MRZ, parse the Visual Inspection Zone (VIZ) and also to find and return a crop of the passport picture (using face detection).
+
+> Version 2.x is a complete rewrite of the package with a new MRZ detection algorithm and is not compatible with version 1.x
 
   
   
@@ -152,6 +156,8 @@ class ExampleController {
 	}
 }
 ```
+> Please note that merging images might cause high memory usage, depending on the size of your images
+
 If you wish to use the static `all()` method and merge the images, publish the package's config file and enable it in there. Note that changing the option in the config will __only__ apply to the `all()` method. Default config value:
 ```php
 	'mergeImages' => false, // bool

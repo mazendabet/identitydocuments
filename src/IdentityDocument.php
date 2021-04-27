@@ -97,6 +97,7 @@ class IdentityDocument
 
     public function setOcrService(string $service)
     {
+        $this->ocrService = $service;
         foreach ($this->images as $image) {
             $image->setOcrService($service);
         }
@@ -104,6 +105,7 @@ class IdentityDocument
 
     public function setFaceDetectionService(string $service)
     {
+        $this->faceDetectionService = $service;
         foreach ($this->images as $image) {
             $image->setFaceDetectionService($service);
         }
@@ -137,7 +139,7 @@ class IdentityDocument
         return $this->mrz;
     }
 
-    public function viz()
+    private function viz()
     {
         if (! $this->text) {
             return null;

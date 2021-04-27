@@ -4,17 +4,12 @@
   
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
-
 [![Total Downloads][ico-downloads]][link-downloads]
-
 [![StyleCI][ico-styleci]][link-styleci]
 
   
 
 For general questions and suggestions join gitter:
-
-  
-
 [![Join the chat at https://gitter.im/werk365/identitydocuments](https://badges.gitter.im/werk365/identitydocuments.svg)](https://gitter.im/werk365/identitydocuments?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
   
@@ -94,7 +89,7 @@ return [
   
 
 ## Usage
-#### Basic usage
+### Basic usage
 Create a new Identity Document with a maximum of 2 images (optional) in this example we'll use a POST request that includes 2 images on our example controller.
 ```php
 use Illuminate\Http\Request;
@@ -129,7 +124,7 @@ $face = $document->getFace()
 ```
 This returns an `Intervention\Image\Image`
 
-#### Get all of the above
+### Get all of the above
   If you wish to use all of these in a simplified way, you can also use the static `all()` method, which also expects up to two images as argument. For example:
   ```php
 use Illuminate\Http\Request;
@@ -154,7 +149,7 @@ The `all()` method returns an array that looks like this:
 ```
 As you can see this includes all the above mentioned methods, plus the `$document->type` variable. The detected face will be returned as a base64 image string, with an image height of 200px.
 
-#### Merging images
+### Merging images
 There are a couple of methods that will configure how the Identity Document is handled. First of all there's the `mergeBackAndFrontImages()` method. This method can be used to reduce the amount of OCR API calls have to be made. Images will be stacked on top of each other when this method is used. Please note that this method would have to be used __before__ the `getMrz()` method. Example:
 ```php
 use Illuminate\Http\Request;
@@ -173,7 +168,7 @@ If you wish to use the static `all()` method and merge the images, publish the p
 	'mergeImages' => false, // bool
 ```
 
-#### Setting an OCR service
+### Setting an OCR service
 If you have made a custom OCR service or are using one different than the default Google service, you can use the `setOcrService()` method. For example let's say we've creating a new `TesseractService` using the methods described above, we can use it for OCR like this:
 ```php
 use Illuminate\Http\Request;
@@ -190,7 +185,7 @@ class ExampleController {
 ```
 If you wish to use the `all()` method, publish the package's config and set the correct service class there.
 
-#### Setting a Face Detection Service
+### Setting a Face Detection Service
 This can be done in a similar way as the OCR service, using the `setFaceDetectionService()` method. For example:
 ```php
 use Illuminate\Http\Request;
@@ -207,7 +202,7 @@ class ExampleController {
 ```
 If you wish to use the `all()` method, publish the package's config and set the correct service class there.
 
-#### Other methods
+### Other methods
 `addBackImage()` sets the back image of the `IdentityDocument`.
 `addFrontImage()` sets the front image of the `IdentityDocument`.
 `setMrz()` sets the `IdentityDcoument` MRZ, for if you just wish to use the parsing functionality.

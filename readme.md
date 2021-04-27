@@ -75,17 +75,6 @@ Making a service is relatively easy, if you want to make a service that does the
 $ php artisan id:service <name> <type>
 ```
 Where `name` is the `ClassName` of the service you wish to create, and `type` is either `OCR`, `FaceDetection` or `Both`. This will create a new (empty) service for you in your `App\Services` namespace implementing the `OCR`, `FaceDetection` or both interfaces.
-
-#### Using Custom Services
-The usage section will go over how to use functionality provided by this package, but if you wish to use the static `IdentityDocument:all()` method, you will have to publish the package config and set the service values there. Default values are:
-```php
-use Werk365\IdentityDocuments\Services\Google;
-
-return [
-'ocrService' => Google::class,
-'faceDetectionService' => Google::class,
-];
-```
   
 
 ## Usage
@@ -209,15 +198,10 @@ If you wish to use the `all()` method, publish the package's config and set the 
 
 ## Change log
 
-  
-
 Please see the [changelog](changelog.md) for more information on what has changed recently.
 
-  
 
 ## Contributing
-
-  
 
 Please see [contributing.md](contributing.md) for details and a todolist.
 
@@ -225,15 +209,12 @@ Please see [contributing.md](contributing.md) for details and a todolist.
 
 ## Security
 
-  
-
 If you discover any security related issues, please email <hergen.dillema@gmail.com> instead of using the issue tracker.
 
   
 
 ## Credits
 
-  
 
 -  [Hergen Dillema][link-author]
 
@@ -242,8 +223,6 @@ If you discover any security related issues, please email <hergen.dillema@gmail.
   
 
 ## License
-
-  
 
 . Please see the [license file](license.md) for more information.
 

@@ -9,8 +9,11 @@ class VizParser extends Viz
         'last_name' => null,
     ];
 
-    public function match($parsed, $mrz, $text)
+    public function match(array $parsed, string $mrz, string $text) :array
     {
+        if (!$mrz) {
+            return [];
+        }
         $ignore = "\n*\s*";
         $mrzCharacters = str_split($mrz);
         foreach ($mrzCharacters as $key => $character) {
@@ -64,7 +67,7 @@ class VizParser extends Viz
         return $this->viz;
     }
 
-    private function compare($mrz, $viz)
+    private function compare(string $mrz, string $viz)
     {
         $viz = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $viz);
         $viz = preg_replace('/([ ]|[-])/', '<', $viz);

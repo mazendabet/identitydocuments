@@ -14,7 +14,7 @@ class IdentityImage
     public Image $image;
     public Exception $error;
     public string $text;
-    public Image $face;
+    public ?Image $face;
     private string $ocrService;
     private string $faceDetectionService;
 

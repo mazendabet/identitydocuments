@@ -52,7 +52,8 @@ class IdentityDocument
         $mrz = $id->getMrz();
         $parsed = $id->getParsedMrz();
         $face = $id->getFace();
-        $faceB64 = 'data:image/jpg;base64,'.
+        $faceB64 = ($face)?
+            'data:image/jpg;base64,'.
             base64_encode(
                 $face
                 ->resize(null, 200, function ($constraint) {
@@ -60,7 +61,8 @@ class IdentityDocument
                 })
                 ->encode()
                 ->encoded
-            );
+            ):
+            null;
         $viz = $id->getViz();
 
         return [
@@ -131,7 +133,6 @@ class IdentityDocument
             $this->text .= $image->ocr();
             if ($mrz = $this->searcher->search($image->text)) {
                 $this->mrz = $mrz ?? '';
-                break;
             }
         }
         $this->type = $this->searcher->type;
@@ -175,7 +176,7 @@ class IdentityDocument
         return $this->face;
     }
 
-    private function face(): string
+    private function face(): ?Image
     {
         $this->face = null;
         foreach ($this->images as $image) {

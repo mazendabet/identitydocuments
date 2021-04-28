@@ -9,9 +9,9 @@ class VizParser extends Viz
         'last_name' => null,
     ];
 
-    public function match(array $parsed, string $mrz, string $text) :array
+    public function match(array $parsed, string $mrz, string $text): array
     {
-        if (!$mrz) {
+        if (! $mrz) {
             return [];
         }
         $ignore = "\n*\s*";

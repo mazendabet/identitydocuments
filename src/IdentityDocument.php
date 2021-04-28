@@ -52,7 +52,7 @@ class IdentityDocument
         $mrz = $id->getMrz();
         $parsed = $id->getParsedMrz();
         $face = $id->getFace();
-        $faceB64 = ($face)?
+        $faceB64 = ($face) ?
             'data:image/jpg;base64,'.
             base64_encode(
                 $face
@@ -61,7 +61,7 @@ class IdentityDocument
                 })
                 ->encode()
                 ->encoded
-            ):
+            ) :
             null;
         $viz = $id->getViz();
 

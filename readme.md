@@ -203,6 +203,9 @@ If you wish to use the `all()` method, publish the package's config and set the 
 `addFrontImage()` sets the front image of the `IdentityDocument`.
 `setMrz()` sets the `IdentityDcoument` MRZ, for if you just wish to use the parsing functionality.
 
+## More information
+If you're interested in how some things work internally, or if you would like to see an example of how to build a custom service within the package, I've written a blog post about all of that which you can find here: [hergen.nl](https://hergen.nl/processing-identity-documents-in-laravel)
+
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.

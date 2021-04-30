@@ -5,6 +5,7 @@ namespace Werk365\IdentityDocuments;
 use Exception;
 use Intervention\Image\Image;
 use ReflectionClass;
+use Werk365\IdentityDocuments\Exceptions\CouldNotSetService;
 use Werk365\IdentityDocuments\Filters\MergeFilter;
 use Werk365\IdentityDocuments\Interfaces\FaceDetection;
 use Werk365\IdentityDocuments\Interfaces\OCR;
@@ -29,7 +30,7 @@ class IdentityImage
     {
         $class = new ReflectionClass($service);
         if (! $class->implementsInterface(OCR::class)) {
-            dd('not ocr');
+            throw CouldNotSetService::couldNotDetectInterface(OCR::class, $service);
         }
         $this->ocrService = $service;
     }
@@ -38,7 +39,7 @@ class IdentityImage
     {
         $class = new ReflectionClass($service);
         if (! $class->implementsInterface(FaceDetection::class)) {
-            dd('not fd');
+            throw CouldNotSetService::couldNotDetectInterface(FaceDetection::class, $service);
         }
         $this->faceDetectionService = $service;
     }

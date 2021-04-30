@@ -50,8 +50,13 @@ class MakeService extends GeneratorCommand
             case 'facedetection':
             case 'fd':
                 $this->stubName = 'FaceDetectionServiceStub.php';
+            break;
             case 'both':
                 $this->stubName = 'OcrFdServiceStub.php';
+                break;
+            default:
+                $this->error('Service Type not recognized, try using "OCR", "FaceDetection" or "Both"' );
+                return false;
         }
         // First we need to ensure that the given name is not a reserved word within the PHP
         // language and that the class name will actually be valid. If it is not valid we

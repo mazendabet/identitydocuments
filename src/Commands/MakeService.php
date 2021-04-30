@@ -55,7 +55,8 @@ class MakeService extends GeneratorCommand
                 $this->stubName = 'OcrFdServiceStub.php';
                 break;
             default:
-                $this->error('Service Type not recognized, try using "OCR", "FaceDetection" or "Both"' );
+                $this->error('Service Type not recognized, try using "OCR", "FaceDetection" or "Both"');
+
                 return false;
         }
         // First we need to ensure that the given name is not a reserved word within the PHP

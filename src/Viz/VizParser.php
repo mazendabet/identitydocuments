@@ -7,6 +7,7 @@ class VizParser extends Viz
     private array $viz = [
         'first_name' => [],
         'last_name' => null,
+        'document_number' => null,
     ];
 
     public function match(array $parsed, string $mrz, string $text): array
@@ -46,6 +47,9 @@ class VizParser extends Viz
                 $this->viz['last_name']['value'] = preg_replace('/</', ' ', $lastName);
                 $lastNameScore = $this->compare($parsed['last_name'], $lastName);
                 $this->viz['last_name']['confidence'] = $lastNameScore;
+            }
+            if(strpos($word, preg_replace('/</', '',$parsed['document_number'])) !== false){
+                $this->viz['document_number']['value'] = $word;
             }
             foreach ($parsed['first_name'] as $key => $first_name) {
                 if (! isset($firstNameScore[$key])) {

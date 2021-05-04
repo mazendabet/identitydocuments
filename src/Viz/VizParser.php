@@ -48,7 +48,7 @@ class VizParser extends Viz
                 $lastNameScore = $this->compare($parsed['last_name'], $lastName);
                 $this->viz['last_name']['confidence'] = $lastNameScore;
             }
-            if(strpos($word, preg_replace('/</', '',$parsed['document_number'])) !== false){
+            if (strpos($word, preg_replace('/</', '', $parsed['document_number'])) !== false) {
                 $this->viz['document_number']['value'] = $word;
             }
             foreach ($parsed['first_name'] as $key => $first_name) {

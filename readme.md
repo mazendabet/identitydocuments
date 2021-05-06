@@ -95,6 +95,7 @@ class ExampleController {
 	}
 }
 ```
+> ⚠️ In this example I use uploaded files, but you can use any files [supported by Intervention](http://image.intervention.io/api/make)
 
 There are now a few things we can do with this newly created Identity Document. First of all finding and returning the MRZ:
 ```php

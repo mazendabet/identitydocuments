@@ -92,8 +92,6 @@ class IdentityDocument
 
     private function createImage($file): IdentityImage
     {
-        file_get_contents($file->getRealPath());
-
         return new IdentityImage(Img::make($file), $this->ocrService, $this->faceDetectionService);
     }
 

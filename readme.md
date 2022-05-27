@@ -127,7 +127,7 @@ use Werk365\IdentityDocuments\IdentityDocument;
 
 class ExampleController {
 	public function id(Request $request){
-		$response = IdentityDocuments::all($request->front, $request->back);
+		$response = IdentityDocument::all($request->front, $request->back);
 		return response()->json($response);
 	}
 }

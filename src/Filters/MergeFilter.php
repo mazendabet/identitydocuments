@@ -18,7 +18,7 @@ class MergeFilter implements FilterInterface
     /**
      * Creates new instance of filter.
      *
-     * @param Intervention\Image\Image $image
+     * @param  Intervention\Image\Image  $image
      */
     public function __construct(Image $image)
     {
@@ -28,7 +28,7 @@ class MergeFilter implements FilterInterface
     /**
      * Applies filter effects to given image.
      *
-     * @param Intervention\Image\Image $image
+     * @param  Intervention\Image\Image  $image
      * @return \Intervention\Image\Image
      */
     public function applyFilter(Image $image)

@@ -10,7 +10,7 @@
             "homepage": "https://365werk.nl"
         }
     ],
-    "homepage": "https://github.com/werk365/identitydocuments",
+    "homepage": "https://github.com/mazendabet/identitydocuments",
     "keywords": ["Laravel", "IdentityDocuments", "MRZ", "Passport"],
     "require": {
         "google/cloud-vision": "^1.3",
@@ -31,16 +31,16 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Werk365\\IdentityDocuments\\Tests\\": "tests"
+            "DiSwitch\\IdentityDocuments\\Tests\\": "tests"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Werk365\\IdentityDocuments\\IdentityDocumentsServiceProvider"
+                "DiSwitch\\IdentityDocuments\\IdentityDocumentsServiceProvider"
             ],
             "aliases": {
-                "IdentityDocuments": "werk365\\IdentityDocuments\\Facades\\IdentityDocuments"
+                "IdentityDocuments": "DiSwitch\\IdentityDocuments\\Facades\\IdentityDocuments"
             }
         }
     }

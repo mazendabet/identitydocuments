@@ -34,7 +34,7 @@ Via Composer
 
 ``` bash
 
-$ composer require werk365/identitydocuments
+$ composer require mazendabet/identitydocuments
 
 ```
 

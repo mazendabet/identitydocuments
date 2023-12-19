@@ -1,5 +1,5 @@
 {
-    "name": "werk365/identitydocuments",
+    "name": "mazendabet/identitydocuments",
     "description": "Package to parse identity documents like passports",
     "license": "GPL-3.0-or-later",
     "version": "2.0.5",
